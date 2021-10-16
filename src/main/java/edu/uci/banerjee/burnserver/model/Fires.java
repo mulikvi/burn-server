@@ -22,8 +22,8 @@ public class Fires {
     private double latitude;
     @Column(name = "longitude")
     private double longitude;
-    @Column(name="burn_type")
-    private String burn_type;
+    @Column(name="burntype")
+    private String burntype;
     @Column(name = "county")
     private String county;
     @Column(name = "source")
@@ -40,7 +40,7 @@ public class Fires {
         this.acres = acres;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.burn_type = burn_type;
+        this.burntype = burntype;
         this.county = county;
         this.source = source;
 
@@ -103,11 +103,11 @@ public class Fires {
     }
 
     public String getBurntype() {
-        return burn_type;
+        return burntype;
     }
 
     public void setBurntype(String burntype) {
-        this.burn_type = burn_type;
+        this.burntype = burntype;
     }
 
     public String getCounty() {
@@ -136,7 +136,7 @@ public class Fires {
                 ", acres=" + acres +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", burn_type='" + burn_type + '\'' +
+                ", burntype='" + burntype + '\'' +
                 ", county='" + county + '\'' +
                 ", source='" + source + '\'' +
                 '}';
