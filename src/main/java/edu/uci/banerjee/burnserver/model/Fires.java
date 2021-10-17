@@ -1,8 +1,6 @@
 package edu.uci.banerjee.burnserver.model;
-
 import javax.persistence.*;
 import java.util.Date;
-
 
 @Entity
 public class Fires {
@@ -33,7 +31,7 @@ public class Fires {
 
     }
 
-    public Fires(int year, Date date, String name, double acres, double latitude, double longitude, String burn_type, String county, String source) {
+    public Fires(int year, Date date, String name, double acres, double latitude, double longitude, String burntype, String county, String source) {
         this.year = year;
         this.date = date;
         this.name = name;

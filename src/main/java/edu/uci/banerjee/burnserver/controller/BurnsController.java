@@ -6,6 +6,8 @@ import com.univocity.parsers.common.record.Record;
 import edu.uci.banerjee.burnserver.model.Fires;
 import edu.uci.banerjee.burnserver.model.FiresRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -25,7 +27,11 @@ public class BurnsController {
     FiresRepo repo;
 
     @PostMapping("/load")
-    public String loadBurnData(@RequestParam("file") MultipartFile file) throws Exception{
+    public ResponseEntity<String> loadBurnData(@RequestParam("file") MultipartFile file) throws Exception{
+
+        if(file.isEmpty()){
+            return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        }
         InputStream inputStream = file.getInputStream();
         CsvParserSettings csvSettings = new CsvParserSettings();
         csvSettings.setHeaderExtractionEnabled(true);
@@ -52,7 +58,7 @@ public class BurnsController {
         });
 
        repo.saveAll(burns);
-        return "load success";
+        return new ResponseEntity<String>(HttpStatus.OK);
     }
 
 }

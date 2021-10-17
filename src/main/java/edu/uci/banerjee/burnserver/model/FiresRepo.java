@@ -19,6 +19,4 @@ public interface FiresRepo extends JpaRepository<Fires, Integer> {
 
     List<Fires> findByAcres(double acres);
 
-
-
 }
