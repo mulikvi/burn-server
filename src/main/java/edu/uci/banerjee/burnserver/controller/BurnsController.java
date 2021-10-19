@@ -5,7 +5,6 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.common.record.Record;
 import edu.uci.banerjee.burnserver.model.Fires;
 import edu.uci.banerjee.burnserver.model.FiresRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -20,11 +19,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RestController
 public class BurnsController {
-    @Autowired
-    FiresRepo repo;
+    private final FiresRepo repo;
+
+    public BurnsController(FiresRepo repo) {
+        this.repo = repo;
+    }
 
     @PostMapping("/load")
     public ResponseEntity<String> loadBurnData(@RequestParam("file") MultipartFile file) throws Exception{

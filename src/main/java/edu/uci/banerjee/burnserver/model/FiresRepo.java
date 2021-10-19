@@ -6,14 +6,14 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
+@CrossOrigin(origins = "*")
 @RepositoryRestResource(collectionResourceRel = "fires",path="fires")
 public interface FiresRepo extends JpaRepository<Fires, Integer> {
     List<Fires> findBySource(String source);
 
     List<Fires> findByCounty(String county);
 
-    List<Fires> findByBurntype(String burntype);
+    List<Fires> findByBurntype(String burnType);
 
     List<Fires> findByYear(int year);
 
