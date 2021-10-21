@@ -53,7 +53,7 @@ public class BurnsController {
             fire.setAcres(Double.parseDouble(record.getString("acres")));
             fire.setLatitude(Double.parseDouble(record.getString("latitude")));
             fire.setLongitude(Double.parseDouble(record.getString("longitude")));
-            fire.setBurntype(record.getString("burn_type"));
+            fire.setBurnType(record.getString("burn_type"));
             fire.setCounty(record.getString("county"));
             fire.setSource(record.getString("source"));
             burns.add(fire);

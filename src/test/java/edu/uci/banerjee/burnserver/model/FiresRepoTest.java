@@ -58,7 +58,7 @@ public class FiresRepoTest {
 
     @Test
     void findByBurntype() {
-        List<Fires> firesList = repo.findByBurntype("Hand Pile");
+        List<Fires> firesList = repo.findByBurnType("Hand Pile");
         Assertions.assertThat(firesList).isNotNull();
         Assertions.assertThat(firesList.size()).isGreaterThan(0);
     }

@@ -13,7 +13,7 @@ public interface FiresRepo extends JpaRepository<Fires, Integer> {
 
     List<Fires> findByCounty(String county);
 
-    List<Fires> findByBurntype(String burnType);
+    List<Fires> findByBurnType(String burnType);
 
     List<Fires> findByYear(int year);
 

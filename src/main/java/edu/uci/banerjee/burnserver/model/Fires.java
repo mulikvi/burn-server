@@ -8,7 +8,6 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Fires {
@@ -35,12 +34,24 @@ public class Fires {
     @Column(name = "longitude")
     private double longitude;
 
-    @Column(name = "burntype")
-    private String burntype;
+    @Column(name = "burnType")
+    private String burnType;
 
     @Column(name = "county")
     private String county;
 
     @Column(name = "source")
     private String source;
+
+    public Fires(int year, Date date, String name, double acres, double latitude, double longitude, String burnType, String county, String source) {
+        this.year = year;
+        this.date = date;
+        this.name = name;
+        this.acres = acres;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.burnType = burnType;
+        this.county = county;
+        this.source = source;
+    }
 }
