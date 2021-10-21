@@ -4,11 +4,6 @@ on:
     branches:
       - master
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check secrets
-        run: echo ${{ secrets.FIRE_KEY }}
   build-and-upload:
     runs-on: ubuntu-latest
     steps:
@@ -49,9 +44,9 @@ jobs:
       - name: Deploy New Container
         uses: appleboy/ssh-action@v0.1.4
         with:
-          host: ${{ secrets.SERVER_IP }}
-          username: ${{ secrets.SERVER_USER }}
-          password: ${{ secrets.FIRE_KEY }}
+          host: ${{ secrets.FIRE_SERVER_IP }}
+          username: ${{ secrets.FIRE_SERVER_USER }}
+          password: ${{ secrets.FIRE_SERVER_PASSWORD }}
           script: |
             docker kill $(docker ps -q)
             docker image prune -all
