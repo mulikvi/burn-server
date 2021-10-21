@@ -36,3 +36,16 @@ jobs:
           context: .
           push: true
           tags: ghcr.io/banerjee-burn-maps/burn-server:latest
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy New Container
+        uses: appleboy/ssh-action@v0.1.4
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.FIRE_KEY }}
+          script: |
+            docker kill $(docker ps -q)
+            docker image prune -all
+            docker run -p 80:8080 ghcr.io/banerjee-burn-maps/burn-server:latest
