@@ -39,7 +39,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     needs:
-      - build-and-deploy
+      - build-and-upload
     steps:
       - name: Deploy New Container
         uses: appleboy/ssh-action@v0.1.4
