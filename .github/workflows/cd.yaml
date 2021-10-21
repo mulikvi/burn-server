@@ -48,6 +48,9 @@ jobs:
           username: ${{ secrets.FIRE_SERVER_USER }}
           password: ${{ secrets.FIRE_SERVER_PASSWORD }}
           script: |
-            sudo docker kill $(sudo docker ps -q)
-            sudo docker image prune -all
-            sudo docker run -p 80:8080 ghcr.io/banerjee-burn-maps/burn-server:latest
+            if [[ $(sudo docker ps -q) ]]; then
+              sudo docker kill $(sudo docker ps -q)
+            fi
+            sudo docker container prune -f
+            sudo docker image prune -af
+            sudo docker run -p 80:8080 -d ghcr.io/banerjee-burn-maps/burn-server:latest
