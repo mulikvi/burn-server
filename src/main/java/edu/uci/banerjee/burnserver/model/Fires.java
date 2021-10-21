@@ -9,7 +9,11 @@ import java.util.Date;
 @Setter
 @ToString
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "fires", indexes={@Index(columnList="source",name="sourceindex"),
+        @Index(columnList = "county", name="countyindex"),
+        @Index(columnList = "year", name ="yearindex")})
 public class Fires {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,15 +47,4 @@ public class Fires {
     @Column(name = "source")
     private String source;
 
-    public Fires(int year, Date date, String name, double acres, double latitude, double longitude, String burnType, String county, String source) {
-        this.year = year;
-        this.date = date;
-        this.name = name;
-        this.acres = acres;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.burnType = burnType;
-        this.county = county;
-        this.source = source;
-    }
 }

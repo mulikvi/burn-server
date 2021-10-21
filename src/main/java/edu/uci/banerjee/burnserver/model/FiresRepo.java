@@ -9,6 +9,7 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RepositoryRestResource(collectionResourceRel = "fires",path="fires")
 public interface FiresRepo extends JpaRepository<Fires, Integer> {
+
     List<Fires> findBySource(String source);
 
     List<Fires> findByCounty(String county);
