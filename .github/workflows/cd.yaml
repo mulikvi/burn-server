@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check secrets
-        run: echo ${{ secrets.GITHUB_TOKEN }}
+        run: echo ${{ secrets.FIRE_KEY }}
   build-and-upload:
     runs-on: ubuntu-latest
     steps:
