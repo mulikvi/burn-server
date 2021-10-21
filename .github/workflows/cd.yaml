@@ -35,4 +35,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/Banerjee-Burn-Maps/burn-server:latest
+          tags: ghcr.io/banerjee-burn-maps/burn-server:latest
