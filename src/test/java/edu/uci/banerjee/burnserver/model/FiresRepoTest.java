@@ -18,8 +18,7 @@ public class FiresRepoTest {
     Fires fire;
     @BeforeEach
     void initialize()throws Exception{
-        fire = new Fires(2009,new SimpleDateFormat("dd/MM/yyyy").parse("5/31/2009"),"Camp",0.05,38.90,-121.06,"Hand Pile"
-                ,"Modesto","CALFIRE");
+        fire = new Fires(1,2009,new SimpleDateFormat("dd/MM/yyyy").parse("5/31/2009"),"Camp",0.05,38.90,-121.06,"Hand Pile","Modesto","CALFIRE");
         repo.save(fire);
     }
 
