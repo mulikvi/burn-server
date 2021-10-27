@@ -8,23 +8,22 @@ import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-@RepositoryRestResource(collectionResourceRel = "fires",path="fires")
-public interface FiresRepo extends JpaRepository<Fires, Integer> {
+@RepositoryRestResource(collectionResourceRel = "fires", path = "fires")
+public interface FiresRepo extends JpaRepository<Fire, Integer> {
 
-    List<Fires> findBySource(String source);
+  List<Fire> findBySource(String source);
 
-    List<Fires> findByCounty(String county);
+  List<Fire> findByCounty(String county);
 
-    List<Fires> findByBurnType(String burnType);
+  List<Fire> findByBurnType(String burnType);
 
-    List<Fires> findByYear(int year);
+  List<Fire> findByYear(int year);
 
-    List<Fires> findByYearIsBetween(int fromYear, int toYear);
+  List<Fire> findByYearIsBetween(int fromYear, int toYear);
 
-    List<Fires> findByAcres(double acres);
+  List<Fire> findByAcres(double acres);
 
-    List<Fires> findByAcresIsBetween(double min, double max);
+  List<Fire> findByAcresIsBetween(double min, double max);
 
-    List<Fires> findByDateIsBetween(Date fromDate, Date toDate);
-
+  List<Fire> findByDateIsBetween(Date fromDate, Date toDate);
 }

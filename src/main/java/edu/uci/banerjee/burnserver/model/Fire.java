@@ -10,12 +10,10 @@ import java.util.Date;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
-
-@Table(name = "fires", indexes={@Index(columnList="source",name="sourceindex"),
-        @Index(columnList = "county", name="countyindex"),
-        @Index(columnList = "year", name ="yearindex")})
-public class Fires {
+@Table(name = "fires", indexes = {@Index(columnList = "source", name = "sourceIndex"),
+        @Index(columnList = "county", name = "countyIndex"),
+        @Index(columnList = "year", name = "yearIndex")})
+public class Fire {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, unique = true)
@@ -47,5 +45,17 @@ public class Fires {
 
     @Column(name = "year")
     private int year;
+
+    public Fire(double acres, String burnType, String county, Date date, double latitude, double longitude, String name, String source, int year) {
+        this.acres = acres;
+        this.burnType = burnType;
+        this.county = county;
+        this.date = date;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.name = name;
+        this.source = source;
+        this.year = year;
+    }
 
 }
