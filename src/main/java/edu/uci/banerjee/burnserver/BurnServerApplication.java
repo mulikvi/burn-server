@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class BurnServerApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BurnServerApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(BurnServerApplication.class, args);
+  }
 }
