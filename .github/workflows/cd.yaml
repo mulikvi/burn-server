@@ -53,4 +53,5 @@ jobs:
             fi
             sudo docker container prune -f
             sudo docker image prune -af
-            sudo docker run -p 80:8080 -d ghcr.io/banerjee-burn-maps/burn-server:latest
+            sudo docker run -p 80:5000 -d ghcr.io/banerjee-burn-maps/burn-client:latest
+            sudo docker run -p 8080:8080 -d ghcr.io/banerjee-burn-maps/burn-server:latest
