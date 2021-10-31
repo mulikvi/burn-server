@@ -40,6 +40,6 @@ public class BurnsControllerTest {
             "file", "file.csv", MediaType.TEXT_PLAIN_VALUE, "Test file".getBytes());
 
     MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    mockMvc.perform(multipart("/load").file(file)).andExpect(status().isOk());
+    mockMvc.perform(multipart("/load/file").file(file)).andExpect(status().isOk());
   }
 }
