@@ -1,10 +1,10 @@
 package edu.uci.banerjee.burnserver.model;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.assertj.core.api.Assertions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,6 +15,8 @@ public class FiresRepoTest {
   @Autowired private FiresRepo repo;
 
   private Fire fire;
+
+  public FiresRepoTest() {}
 
   @BeforeEach
   void initialize() throws Exception {
@@ -28,11 +30,10 @@ public class FiresRepoTest {
             -121.05,
             "Camp",
             "CALFIRE",
-            2010);
+            2010,
+            "Private");
     repo.save(fire);
   }
-
-  public FiresRepoTest() {}
 
   @Test
   public void save() {
@@ -103,5 +104,12 @@ public class FiresRepoTest {
             new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2011"));
     Assertions.assertThat(firesList).isNotNull();
     Assertions.assertThat(firesList.size()).isGreaterThan(0);
+  }
+
+  @Test
+  void findByOwner() {
+    List<Fire> firesList = repo.findByOwner("Private");
+    Assertions.assertThat(firesList).isNotNull();
+    Assertions.assertThat(firesList.size()).isEqualTo(1);
   }
 }

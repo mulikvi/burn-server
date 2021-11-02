@@ -1,10 +1,11 @@
 package edu.uci.banerjee.burnserver.controller;
 
+import com.univocity.parsers.common.record.Record;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
-import com.univocity.parsers.common.record.Record;
 import edu.uci.banerjee.burnserver.model.Fire;
 import edu.uci.banerjee.burnserver.model.FiresRepo;
+import edu.uci.banerjee.burnserver.services.DataIngestService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,20 +14,23 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @CrossOrigin(origins = "*")
 @RestController
 @Slf4j
 public class BurnsController {
   private final FiresRepo repo;
+  private final DataIngestService dataIngestService;
+  private final ExecutorService pool;
 
-  public BurnsController(FiresRepo repo) {
+  public BurnsController(FiresRepo repo, DataIngestService dataIngestService) {
     this.repo = repo;
+    this.dataIngestService = dataIngestService;
+
+    this.pool = Executors.newCachedThreadPool();
   }
 
   @GetMapping("/fires")
@@ -44,19 +48,24 @@ public class BurnsController {
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    int numRecords = saveFires(readRecords(file.getInputStream()));
+    int numRecords = dataIngestService.saveFires(readRecords(file.getInputStream()));
 
     log.info("Saved {} Fires.", numRecords);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PostMapping("/load")
-  public ResponseEntity<String> loadBurnData(@RequestBody String csv) throws Exception {
+  public ResponseEntity<String> loadBurnData(@RequestBody String csv) {
     log.info("Received New Dataset.");
 
-    int numRecords = saveFires(readRecords(new ByteArrayInputStream(csv.getBytes())));
+    pool.submit(
+        () -> {
+          int numRecords =
+              dataIngestService.saveFires(readRecords(new ByteArrayInputStream(csv.getBytes())));
 
-    log.info("Saved {} Fires.", numRecords);
+          log.info("Saved {} Fires.", numRecords);
+        });
+
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
@@ -65,31 +74,5 @@ public class BurnsController {
     csvSettings.setHeaderExtractionEnabled(true);
     CsvParser parser = new CsvParser(csvSettings);
     return parser.parseAllRecords(data);
-  }
-
-  private int saveFires(List<Record> records) {
-    List<Fire> burns = new ArrayList<>();
-
-    records.forEach(
-        record -> {
-          Fire fire = new Fire();
-          fire.setYear(Integer.parseInt(record.getString("year")));
-          try {
-            fire.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(record.getString("date")));
-          } catch (ParseException e) {
-            e.printStackTrace();
-          }
-          fire.setName(record.getString("name"));
-          fire.setAcres(Double.parseDouble(record.getString("acres")));
-          fire.setLatitude(Double.parseDouble(record.getString("latitude")));
-          fire.setLongitude(Double.parseDouble(record.getString("longitude")));
-          fire.setBurnType(record.getString("burn_type"));
-          fire.setCounty(record.getString("county"));
-          fire.setSource(record.getString("source"));
-          burns.add(fire);
-        });
-    repo.saveAll(burns);
-
-    return burns.size();
   }
 }

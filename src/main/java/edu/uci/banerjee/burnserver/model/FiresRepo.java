@@ -10,7 +10,6 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RepositoryRestResource(collectionResourceRel = "fires", path = "fires")
 public interface FiresRepo extends JpaRepository<Fire, Integer> {
-
   List<Fire> findBySource(String source);
 
   List<Fire> findByCounty(String county);
@@ -26,4 +25,6 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
   List<Fire> findByAcresIsBetween(double min, double max);
 
   List<Fire> findByDateIsBetween(Date fromDate, Date toDate);
+
+  List<Fire> findByOwner(String owner);
 }
