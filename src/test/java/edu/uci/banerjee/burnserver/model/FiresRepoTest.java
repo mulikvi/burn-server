@@ -31,7 +31,8 @@ public class FiresRepoTest {
             "Camp",
             "CALFIRE",
             2010,
-            "Private");
+            "Private",
+            10.25);
     repo.save(fire);
   }
 
@@ -110,6 +111,14 @@ public class FiresRepoTest {
   void findByOwner() {
     List<Fire> firesList = repo.findByOwner("Private");
     Assertions.assertThat(firesList).isNotNull();
+    Assertions.assertThat(firesList.size()).isEqualTo(1);
+  }
+
+  @Test
+  void findIntensityBetween() {
+    List<Fire> firesList = repo.findByIntensityBetween(0.0, 30.11);
+    Assertions.assertThat(firesList).isNotNull();
+    Assertions.assertThat(firesList.size()).isGreaterThan(0);
     Assertions.assertThat(firesList.size()).isEqualTo(1);
   }
 }

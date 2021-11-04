@@ -48,6 +48,10 @@ public class DataIngestService {
     fire.setSource(fireRecord.getString("source"));
     fire.setOwner(
         landOwnershipService.getOwnershipFromCoordinate(fire.getLatitude(), fire.getLongitude()));
+
+    if (fireRecord.getDouble("intensity") != null)
+      fire.setIntensity(fireRecord.getDouble("intensity"));
+
     return fire;
   }
 }
