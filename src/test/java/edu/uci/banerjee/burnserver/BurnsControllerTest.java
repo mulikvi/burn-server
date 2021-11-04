@@ -33,7 +33,7 @@ public class BurnsControllerTest {
   }
 
   @Test
-  public void loadBurnDataExists() throws Exception {
+  public void loadBurnDataFromFileExists() throws Exception {
 
     MockMultipartFile file =
         new MockMultipartFile(
@@ -41,5 +41,12 @@ public class BurnsControllerTest {
 
     MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     mockMvc.perform(multipart("/load/file").file(file)).andExpect(status().isOk());
+  }
+
+  @Test
+  public void loadBurnDataFromStringExists() throws Exception {
+
+    MockMvc mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+    mockMvc.perform(multipart("/load").contentType(MediaType.TEXT_PLAIN).content("test")).andExpect(status().isOk());
   }
 }
