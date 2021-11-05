@@ -27,4 +27,6 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
   List<Fire> findByDateIsBetween(Date fromDate, Date toDate);
 
   List<Fire> findByOwner(String owner);
+
+  List<Fire> findByIntensityBetween(double min, double max);
 }

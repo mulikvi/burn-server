@@ -56,6 +56,9 @@ public class Fire {
   @Column(name = "owner")
   private String owner;
 
+  @Column(name = "intensity")
+  private double intensity;
+
   public Fire(
       double acres,
       String burnType,
@@ -66,7 +69,8 @@ public class Fire {
       String name,
       String source,
       int year,
-      String owner) {
+      String owner,
+      double intensity) {
     this.acres = acres;
     this.burnType = burnType;
     this.county = county;
@@ -77,5 +81,6 @@ public class Fire {
     this.source = source;
     this.year = year;
     this.owner = owner;
+    this.intensity = intensity;
   }
 }
