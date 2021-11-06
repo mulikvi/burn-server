@@ -115,8 +115,8 @@ public class FiresRepoTest {
   }
 
   @Test
-  void findIntensityBetween() {
-    List<Fire> firesList = repo.findByIntensityBetween(0.0, 30.11);
+  void findBySeverityBetween() {
+    List<Fire> firesList = repo.findBySeverityBetween(0.0, 30.11);
     Assertions.assertThat(firesList).isNotNull();
     Assertions.assertThat(firesList.size()).isGreaterThan(0);
     Assertions.assertThat(firesList.size()).isEqualTo(1);
