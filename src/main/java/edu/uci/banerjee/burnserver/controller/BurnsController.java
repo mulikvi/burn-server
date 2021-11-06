@@ -6,6 +6,7 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import edu.uci.banerjee.burnserver.model.Fire;
 import edu.uci.banerjee.burnserver.model.FiresRepo;
 import edu.uci.banerjee.burnserver.services.DataIngestService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -69,10 +72,47 @@ public class BurnsController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
+  @GetMapping("query")
+  public ResponseEntity<Resp> queryFires(
+      @RequestParam(required = false) String source,
+      @RequestParam(required = false) String county,
+      @RequestParam(required = false) Double minAcres,
+      @RequestParam(required = false) Double maxAcres,
+      @RequestParam(required = false) String burnType,
+      @RequestParam(required = false) Date startYear,
+      @RequestParam(required = false) Date endYear,
+      @RequestParam(required = false) Date startMonth,
+      @RequestParam(required = false) Date endMonth,
+      @RequestParam(required = false) String owner,
+      @RequestParam(required = false) Double minIntensity,
+      @RequestParam(required = false) Double maxIntensity) {
+
+    log.debug("Query against all features.");
+
+    final var fires =
+        repo.findByAllParams(
+            source, county, minAcres, maxAcres, burnType, startYear, endYear, owner);
+    final var resp = new Resp(new EmbeddedData(fires));
+
+    log.debug("Discovered {}.", resp);
+
+    return new ResponseEntity<>(resp, HttpStatus.OK);
+  }
+
   private List<Record> readRecords(InputStream data) {
     CsvParserSettings csvSettings = new CsvParserSettings();
     csvSettings.setHeaderExtractionEnabled(true);
     CsvParser parser = new CsvParser(csvSettings);
     return parser.parseAllRecords(data);
+  }
+
+  @Data
+  private static class Resp implements Serializable {
+    private final EmbeddedData _embedded;
+  }
+
+  @Data
+  private static class EmbeddedData implements Serializable {
+    private final List<Fire> fires;
   }
 }

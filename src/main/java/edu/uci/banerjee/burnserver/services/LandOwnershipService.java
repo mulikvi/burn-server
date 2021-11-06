@@ -48,6 +48,7 @@ public class LandOwnershipService {
       final var queryUrl = buildQueryUrl(lat, lon);
       final var response = get(queryUrl);
 
+      log.debug("Got Ownership for Coordinate {} {}", lat, lon);
       if (response.getFeatures() == null
           || (response.getFeatures() != null && response.getFeatures().isEmpty()))
         return PRIVATE_LAND;

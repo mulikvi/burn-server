@@ -32,6 +32,8 @@ public class DataIngestService {
   }
 
   private Fire createFire(final Record fireRecord) {
+    log.debug("Ingesting record {}", fireRecord);
+
     final Fire fire = new Fire();
     fire.setYear(Integer.parseInt(fireRecord.getString("year")));
     try {
@@ -48,9 +50,6 @@ public class DataIngestService {
     fire.setSource(fireRecord.getString("source"));
     fire.setOwner(
         landOwnershipService.getOwnershipFromCoordinate(fire.getLatitude(), fire.getLongitude()));
-
-    if (fireRecord.getDouble("intensity") != null)
-      fire.setIntensity(fireRecord.getDouble("intensity"));
 
     return fire;
   }
