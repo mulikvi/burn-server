@@ -30,7 +30,7 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
 
   List<Fire> findByOwner(String owner);
 
-  List<Fire> findByIntensityBetween(double min, double max);
+  List<Fire> findBySeverityBetween(Double min, Double max);
 
   // todo this needs some work done to how the start and end months were implemented. We need to
   // revisit the ux of that filter
