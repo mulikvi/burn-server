@@ -6,8 +6,6 @@ import edu.uci.banerjee.burnserver.model.FiresRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -30,17 +28,13 @@ public class DataIngestService {
 
     return burns.size();
   }
-
+`
   private Fire createFire(final Record fireRecord) {
     log.debug("Ingesting record {}", fireRecord);
 
     final Fire fire = new Fire();
     fire.setYear(Integer.parseInt(fireRecord.getString("year")));
-    try {
-      fire.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
-    } catch (ParseException e) {
-      log.warn("Date is Invalid.");
-    }
+    fire.setMonth(Integer.parseInt(fireRecord.getString("month")));
     fire.setName(fireRecord.getString("name"));
     fire.setAcres(Double.parseDouble(fireRecord.getString("acres")));
     fire.setLatitude(Double.parseDouble(fireRecord.getString("latitude")));

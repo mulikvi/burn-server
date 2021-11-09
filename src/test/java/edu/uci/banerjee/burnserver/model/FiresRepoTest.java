@@ -6,8 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 @DataJpaTest
@@ -25,12 +23,13 @@ public class FiresRepoTest {
             0.05,
             "Hand Pile",
             "Modesto",
-            new SimpleDateFormat("dd/MM/yyyy").parse("12/10/2010"),
             38.90,
             -121.05,
             "Camp",
             "CALFIRE",
             2010,
+            12,
+            22,
             "Private",
             10.25);
     repo.save(fire);
@@ -98,16 +97,6 @@ public class FiresRepoTest {
   }
 
   @Test
-  void findByDateIsBetween() throws ParseException {
-    List<Fire> firesList =
-        repo.findByDateIsBetween(
-            new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2000"),
-            new SimpleDateFormat("dd/MM/yyyy").parse("01/01/2011"));
-    Assertions.assertThat(firesList).isNotNull();
-    Assertions.assertThat(firesList.size()).isGreaterThan(0);
-  }
-
-  @Test
   void findByOwner() {
     List<Fire> firesList = repo.findByOwner("Private");
     Assertions.assertThat(firesList).isNotNull();
@@ -117,6 +106,15 @@ public class FiresRepoTest {
   @Test
   void findBySeverityBetween() {
     List<Fire> firesList = repo.findBySeverityBetween(0.0, 30.11);
+    Assertions.assertThat(firesList).isNotNull();
+    Assertions.assertThat(firesList.size()).isGreaterThan(0);
+    Assertions.assertThat(firesList.size()).isEqualTo(1);
+  }
+
+  @Test
+  void findByAllParams() {
+    List<Fire> firesList =
+        repo.findByAllParams(null, null, null, null, null, null, null, null, null, null);
     Assertions.assertThat(firesList).isNotNull();
     Assertions.assertThat(firesList.size()).isGreaterThan(0);
     Assertions.assertThat(firesList.size()).isEqualTo(1);
