@@ -28,7 +28,7 @@ public class DataIngestService {
 
     return burns.size();
   }
-`
+
   private Fire createFire(final Record fireRecord) {
     log.debug("Ingesting record {}", fireRecord);
 
