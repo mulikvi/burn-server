@@ -6,6 +6,9 @@ import edu.uci.banerjee.burnserver.model.FiresRepo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -32,7 +35,7 @@ public class DataIngestService {
   private Fire createFire(final Record fireRecord) {
     log.debug("Ingesting record {}", fireRecord);
 
-    final Fire fire = new Fire();
+    final var fire = new Fire();
     fire.setYear(Integer.parseInt(fireRecord.getString("year")));
     fire.setMonth(Integer.parseInt(fireRecord.getString("month")));
     fire.setName(fireRecord.getString("name"));
@@ -44,6 +47,16 @@ public class DataIngestService {
     fire.setSource(fireRecord.getString("source"));
     fire.setOwner(
         landOwnershipService.getOwnershipFromCoordinate(fire.getLatitude(), fire.getLongitude()));
+
+    try {
+      final var calendar = Calendar.getInstance();
+      calendar.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
+      fire.setYear(calendar.get(Calendar.YEAR));
+      fire.setMonth(calendar.get(Calendar.MONTH));
+      fire.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+    } catch (ParseException e) {
+      log.warn("Date is Invalid.");
+    }
 
     return fire;
   }
