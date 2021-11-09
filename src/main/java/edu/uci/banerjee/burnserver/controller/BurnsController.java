@@ -16,7 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -79,10 +78,10 @@ public class BurnsController {
       @RequestParam(required = false) Double minAcres,
       @RequestParam(required = false) Double maxAcres,
       @RequestParam(required = false) String burnType,
-      @RequestParam(required = false) Date startYear,
-      @RequestParam(required = false) Date endYear,
-      @RequestParam(required = false) Date startMonth,
-      @RequestParam(required = false) Date endMonth,
+      @RequestParam(required = false) Integer startYear,
+      @RequestParam(required = false) Integer endYear,
+      @RequestParam(required = false) Integer startMonth,
+      @RequestParam(required = false) Integer endMonth,
       @RequestParam(required = false) String owner,
       @RequestParam(required = false) Double minIntensity,
       @RequestParam(required = false) Double maxIntensity) {
@@ -91,7 +90,16 @@ public class BurnsController {
 
     final var fires =
         repo.findByAllParams(
-            source, county, minAcres, maxAcres, burnType, startYear, endYear, owner);
+            source,
+            county,
+            minAcres,
+            maxAcres,
+            burnType,
+            startYear,
+            endYear,
+            startMonth,
+            endMonth,
+            owner);
     final var resp = new Resp(new EmbeddedData(fires));
 
     log.debug("Discovered {}.", resp);

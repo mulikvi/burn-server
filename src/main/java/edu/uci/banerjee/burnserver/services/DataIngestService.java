@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import static java.util.stream.Collectors.toUnmodifiableList;
@@ -34,13 +35,7 @@ public class DataIngestService {
   private Fire createFire(final Record fireRecord) {
     log.debug("Ingesting record {}", fireRecord);
 
-    final Fire fire = new Fire();
-    fire.setYear(Integer.parseInt(fireRecord.getString("year")));
-    try {
-      fire.setDate(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
-    } catch (ParseException e) {
-      log.warn("Date is Invalid.");
-    }
+    final var fire = new Fire();
     fire.setName(fireRecord.getString("name"));
     fire.setAcres(Double.parseDouble(fireRecord.getString("acres")));
     fire.setLatitude(Double.parseDouble(fireRecord.getString("latitude")));
@@ -50,6 +45,16 @@ public class DataIngestService {
     fire.setSource(fireRecord.getString("source"));
     fire.setOwner(
         landOwnershipService.getOwnershipFromCoordinate(fire.getLatitude(), fire.getLongitude()));
+
+    try {
+      final var fireDate = Calendar.getInstance();
+      fireDate.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
+      fire.setYear(fireDate.get(Calendar.YEAR));
+      fire.setMonth(fireDate.get(Calendar.MONTH));
+      fire.setDay(fireDate.get(Calendar.DAY_OF_MONTH));
+    } catch (ParseException e) {
+      log.warn("Date is Invalid.");
+    }
 
     return fire;
   }

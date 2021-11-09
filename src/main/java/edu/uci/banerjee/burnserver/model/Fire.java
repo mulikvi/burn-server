@@ -6,7 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Getter
@@ -35,9 +34,6 @@ public class Fire {
   @Column(name = "county")
   private String county;
 
-  @Column(name = "date")
-  private Date date;
-
   @Column(name = "latitude")
   private double latitude;
 
@@ -53,6 +49,12 @@ public class Fire {
   @Column(name = "year")
   private int year;
 
+  @Column(name = "month")
+  private int month;
+
+  @Column(name = "day")
+  private int day;
+
   @Column(name = "owner")
   private String owner;
 
@@ -63,23 +65,25 @@ public class Fire {
       double acres,
       String burnType,
       String county,
-      Date date,
       double latitude,
       double longitude,
       String name,
       String source,
       int year,
+      int month,
+      int day,
       String owner,
       Double severity) {
     this.acres = acres;
     this.burnType = burnType;
     this.county = county;
-    this.date = date;
     this.latitude = latitude;
     this.longitude = longitude;
     this.name = name;
     this.source = source;
     this.year = year;
+    this.month = month;
+    this.day = day;
     this.owner = owner;
     this.severity = severity;
   }
