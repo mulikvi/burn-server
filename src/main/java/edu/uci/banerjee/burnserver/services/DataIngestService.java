@@ -36,8 +36,6 @@ public class DataIngestService {
     log.debug("Ingesting record {}", fireRecord);
 
     final var fire = new Fire();
-    fire.setYear(Integer.parseInt(fireRecord.getString("year")));
-    fire.setMonth(Integer.parseInt(fireRecord.getString("month")));
     fire.setName(fireRecord.getString("name"));
     fire.setAcres(Double.parseDouble(fireRecord.getString("acres")));
     fire.setLatitude(Double.parseDouble(fireRecord.getString("latitude")));
@@ -49,11 +47,11 @@ public class DataIngestService {
         landOwnershipService.getOwnershipFromCoordinate(fire.getLatitude(), fire.getLongitude()));
 
     try {
-      final var calendar = Calendar.getInstance();
-      calendar.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
-      fire.setYear(calendar.get(Calendar.YEAR));
-      fire.setMonth(calendar.get(Calendar.MONTH));
-      fire.setDay(calendar.get(Calendar.DAY_OF_MONTH));
+      final var fireDate = Calendar.getInstance();
+      fireDate.setTime(new SimpleDateFormat("dd/MM/yyyy").parse(fireRecord.getString("date")));
+      fire.setYear(fireDate.get(Calendar.YEAR));
+      fire.setMonth(fireDate.get(Calendar.MONTH));
+      fire.setDay(fireDate.get(Calendar.DAY_OF_MONTH));
     } catch (ParseException e) {
       log.warn("Date is Invalid.");
     }
