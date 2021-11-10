@@ -50,10 +50,10 @@ public class Fire {
   private int year;
 
   @Column(name = "month")
-  private int month;
+  private Integer month;
 
   @Column(name = "day")
-  private int day;
+  private Integer day;
 
   @Column(name = "owner")
   private String owner;
@@ -70,8 +70,8 @@ public class Fire {
       String name,
       String source,
       int year,
-      int month,
-      int day,
+      Integer month,
+      Integer day,
       String owner,
       Double severity) {
     this.acres = acres;

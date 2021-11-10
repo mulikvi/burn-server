@@ -83,8 +83,8 @@ public class BurnsController {
       @RequestParam(required = false) Integer startMonth,
       @RequestParam(required = false) Integer endMonth,
       @RequestParam(required = false) String owner,
-      @RequestParam(required = false) Double minIntensity,
-      @RequestParam(required = false) Double maxIntensity) {
+      @RequestParam(required = false) Double minSeverity,
+      @RequestParam(required = false) Double maxSeverity) {
 
     log.debug("Query against all features.");
 
