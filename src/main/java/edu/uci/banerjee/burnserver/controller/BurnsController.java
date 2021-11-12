@@ -5,6 +5,7 @@ import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import edu.uci.banerjee.burnserver.model.Fire;
 import edu.uci.banerjee.burnserver.model.FiresRepo;
+import edu.uci.banerjee.burnserver.model.Statistics;
 import edu.uci.banerjee.burnserver.services.DataIngestService;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -106,6 +108,52 @@ public class BurnsController {
 
     return new ResponseEntity<>(resp, HttpStatus.OK);
   }
+
+  @GetMapping("statistics")
+  public Statistics fireStatistics(
+          @RequestParam(required = false) String source,
+          @RequestParam(required = false) String county,
+          @RequestParam(required = false) Double minAcres,
+          @RequestParam(required = false) Double maxAcres,
+          @RequestParam(required = false) String burnType,
+          @RequestParam(required = false) Integer startYear,
+          @RequestParam(required = false) Integer endYear,
+          @RequestParam(required = false) Integer startMonth,
+          @RequestParam(required = false) Integer endMonth,
+          @RequestParam(required = false) String owner,
+          @RequestParam(required = false) Double minSeverity,
+          @RequestParam(required = false) Double maxSeverity) {
+
+    log.debug("Calculating fire statistics.");
+
+    final var fireStats =
+            repo.filterStatistics(
+                    source,
+                    county,
+                    minAcres,
+                    maxAcres,
+                    burnType,
+                    startYear,
+                    endYear,
+                    startMonth,
+                    endMonth,
+                    owner);
+
+    String[] stats = fireStats.split(",");
+    Integer count = Integer.parseInt(stats[0]);
+    Double size = Double.parseDouble(stats[1]);
+    Integer minYear =Integer.parseInt(stats[2]);
+    Integer maxYear = Integer.parseInt(stats[3]);
+    Statistics fireStatistics = new Statistics(count,size,minYear,maxYear);
+    return fireStatistics;
+  }
+
+
+
+
+
+
+
 
   private List<Record> readRecords(InputStream data) {
     CsvParserSettings csvSettings = new CsvParserSettings();
