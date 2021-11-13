@@ -48,4 +48,22 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
       @Param("startMonth") Integer startMonth,
       @Param("endMonth") Integer endMonth,
       @Param("owner") String owner);
+
+  @Query(
+          "SELECT COUNT(f), AVG(f.acres), MIN(f.year), MAX(f.year) FROM Fire f WHERE (:source is null or f.source = :source) and (:county is null or f.county = :county) and"
+                  + "(:minAcres is null or f.acres >= :minAcres) and (:maxAcres is null or f.acres < :maxAcres) and "
+                  + "(:burnType is null or f.burnType = :burnType) and (:startYear is null or f.year >= :startYear) and "
+                  + "(:endYear is null or f.year >= :endYear) and (:startMonth is null or f.month >= :startMonth) and "
+                  + "(:endMonth is null or f.month >= :endMonth) and (:owner is null or f.owner = :owner)")
+  String filterStatistics(
+          @Param("source") String source,
+          @Param("county") String county,
+          @Param("minAcres") Double minAcres,
+          @Param("maxAcres") Double maxAcres,
+          @Param("burnType") String burnType,
+          @Param("startYear") Integer startYear,
+          @Param("endYear") Integer endYear,
+          @Param("startMonth") Integer startMonth,
+          @Param("endMonth") Integer endMonth,
+          @Param("owner") String owner);
 }
