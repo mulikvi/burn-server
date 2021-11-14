@@ -144,7 +144,9 @@ public class BurnsController {
     Double size = Double.parseDouble(stats[1]);
     Integer minYear =Integer.parseInt(stats[2]);
     Integer maxYear = Integer.parseInt(stats[3]);
-    Statistics fireStatistics = new Statistics(count,size,minYear,maxYear);
+    Double minSize = Double.parseDouble(stats[4]);
+    Double maxSize = Double.parseDouble(stats[5]);
+    Statistics fireStatistics = new Statistics(count,size,minYear,maxYear, minSize, maxSize);
     return fireStatistics;
   }
 
