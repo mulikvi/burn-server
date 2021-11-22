@@ -11,6 +11,11 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RepositoryRestResource(collectionResourceRel = "fires", path = "fires")
 public interface FiresRepo extends JpaRepository<Fire, Integer> {
+
+  List<Fire> findByEscapedFalse();
+
+  List<Fire> findByEscapedTrue();
+
   List<Fire> findBySource(String source);
 
   List<Fire> findByCounty(String county);
