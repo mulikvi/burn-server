@@ -76,6 +76,48 @@ public class BurnsController {
   @GetMapping("query")
   public ResponseEntity<Resp> queryFires(
       @RequestParam(required = false) String source,
+      @RequestParam(required = false) String countyUnitId,
+      @RequestParam(required = false) String county,
+      @RequestParam(required = false) Double minAcres,
+      @RequestParam(required = false) Double maxAcres,
+      @RequestParam(required = false) String burnType,
+      @RequestParam(required = false) String treatmentType,
+      @RequestParam(required = false) Integer startYear,
+      @RequestParam(required = false) Integer endYear,
+      @RequestParam(required = false) Integer startMonth,
+      @RequestParam(required = false) Integer endMonth,
+      @RequestParam(required = false) String owner,
+      @RequestParam(required = false) Boolean escaped,
+      @RequestParam(required = false) Double minSeverity,
+      @RequestParam(required = false) Double maxSeverity) {
+
+    log.debug("Query against all features.");
+
+    final var fires =
+        repo.findByAllParams(
+            source,
+            countyUnitId,
+            county,
+            minAcres,
+            maxAcres,
+            burnType,
+            treatmentType,
+            startYear,
+            endYear,
+            startMonth,
+            endMonth,
+            owner,
+            escaped);
+    final var resp = new Resp(new EmbeddedData(fires));
+
+    log.debug("Discovered {}.", resp);
+
+    return new ResponseEntity<>(resp, HttpStatus.OK);
+  }
+
+  @GetMapping("statistics")
+  public Statistics fireStatistics(
+      @RequestParam(required = false) String source,
       @RequestParam(required = false) String county,
       @RequestParam(required = false) Double minAcres,
       @RequestParam(required = false) Double maxAcres,
@@ -88,10 +130,10 @@ public class BurnsController {
       @RequestParam(required = false) Double minSeverity,
       @RequestParam(required = false) Double maxSeverity) {
 
-    log.debug("Query against all features.");
+    log.debug("Calculating fire statistics.");
 
-    final var fires =
-        repo.findByAllParams(
+    final var fireStats =
+        repo.filterStatistics(
             source,
             county,
             minAcres,
@@ -102,60 +144,17 @@ public class BurnsController {
             startMonth,
             endMonth,
             owner);
-    final var resp = new Resp(new EmbeddedData(fires));
-
-    log.debug("Discovered {}.", resp);
-
-    return new ResponseEntity<>(resp, HttpStatus.OK);
-  }
-
-  @GetMapping("statistics")
-  public Statistics fireStatistics(
-          @RequestParam(required = false) String source,
-          @RequestParam(required = false) String county,
-          @RequestParam(required = false) Double minAcres,
-          @RequestParam(required = false) Double maxAcres,
-          @RequestParam(required = false) String burnType,
-          @RequestParam(required = false) Integer startYear,
-          @RequestParam(required = false) Integer endYear,
-          @RequestParam(required = false) Integer startMonth,
-          @RequestParam(required = false) Integer endMonth,
-          @RequestParam(required = false) String owner,
-          @RequestParam(required = false) Double minSeverity,
-          @RequestParam(required = false) Double maxSeverity) {
-
-    log.debug("Calculating fire statistics.");
-
-    final var fireStats =
-            repo.filterStatistics(
-                    source,
-                    county,
-                    minAcres,
-                    maxAcres,
-                    burnType,
-                    startYear,
-                    endYear,
-                    startMonth,
-                    endMonth,
-                    owner);
 
     String[] stats = fireStats.split(",");
     Integer count = Integer.parseInt(stats[0]);
     Double size = Double.parseDouble(stats[1]);
-    Integer minYear =Integer.parseInt(stats[2]);
+    Integer minYear = Integer.parseInt(stats[2]);
     Integer maxYear = Integer.parseInt(stats[3]);
     Double minSize = Double.parseDouble(stats[4]);
     Double maxSize = Double.parseDouble(stats[5]);
-    Statistics fireStatistics = new Statistics(count,size,minYear,maxYear, minSize, maxSize);
+    Statistics fireStatistics = new Statistics(count, size, minYear, maxYear, minSize, maxSize);
     return fireStatistics;
   }
-
-
-
-
-
-
-
 
   private List<Record> readRecords(InputStream data) {
     CsvParserSettings csvSettings = new CsvParserSettings();

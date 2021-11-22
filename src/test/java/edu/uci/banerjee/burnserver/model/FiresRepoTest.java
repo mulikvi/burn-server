@@ -22,6 +22,8 @@ public class FiresRepoTest {
         new Fire(
             0.05,
             "Hand Pile",
+            null,
+            "MEU",
             "Modesto",
             38.90,
             -121.05,
@@ -31,7 +33,8 @@ public class FiresRepoTest {
             12,
             22,
             "Private",
-            10.25);
+            10.25,
+            false);
     repo.save(fire);
   }
 
@@ -112,9 +115,23 @@ public class FiresRepoTest {
   }
 
   @Test
+  void findByEscapedFalse() {
+    List<Fire> firesList = repo.findByEscapedFalse();
+    Assertions.assertThat(firesList).isNotNull();
+    Assertions.assertThat(firesList.size()).isGreaterThan(0);
+    Assertions.assertThat(firesList.size()).isEqualTo(1);
+  }
+
+  @Test
+  void findByEscapedTrue() {
+    List<Fire> firesList = repo.findByEscapedTrue();
+    Assertions.assertThat(firesList.size()).isEqualTo(0);
+  }
+
+  @Test
   void findByAllParams() {
     List<Fire> firesList =
-        repo.findByAllParams(null, null, null, null, null, null, null, null, null, null);
+        repo.findByAllParams(null, null, null, null, null, null, null, null, null, null, null, null, null);
     Assertions.assertThat(firesList).isNotNull();
     Assertions.assertThat(firesList.size()).isGreaterThan(0);
     Assertions.assertThat(firesList.size()).isEqualTo(1);
