@@ -62,7 +62,7 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
           + "(:minAcres is null or f.acres >= :minAcres) and (:maxAcres is null or f.acres < :maxAcres) and "
           + "(:burnType is null or f.burnType = :burnType) and (:startYear is null or f.year >= :startYear) and "
           + "(:endYear is null or f.year >= :endYear) and (:startMonth is null or f.month >= :startMonth) and "
-          + "(:endMonth is null or f.month >= :endMonth) and (:owner is null or f.owner = :owner)")
+          + "(:endMonth is null or f.month >= :endMonth) and (:owner is null or f.owner = :owner) and (:escaped is null or f.escaped = :escaped)")
   String filterStatistics(
       @Param("source") String source,
       @Param("county") String county,
@@ -73,5 +73,6 @@ public interface FiresRepo extends JpaRepository<Fire, Integer> {
       @Param("endYear") Integer endYear,
       @Param("startMonth") Integer startMonth,
       @Param("endMonth") Integer endMonth,
-      @Param("owner") String owner);
+      @Param("owner") String owner,
+      @Param("escaped") Boolean escaped);
 }
