@@ -118,10 +118,12 @@ public class BurnsController {
   @GetMapping("statistics")
   public Statistics fireStatistics(
       @RequestParam(required = false) String source,
+      @RequestParam(required = false) String countyUnitId,
       @RequestParam(required = false) String county,
       @RequestParam(required = false) Double minAcres,
       @RequestParam(required = false) Double maxAcres,
       @RequestParam(required = false) String burnType,
+      @RequestParam(required = false) String treatmentType,
       @RequestParam(required = false) Integer startYear,
       @RequestParam(required = false) Integer endYear,
       @RequestParam(required = false) Integer startMonth,
@@ -136,10 +138,12 @@ public class BurnsController {
     final var fireStats =
         repo.filterStatistics(
             source,
+            countyUnitId,
             county,
             minAcres,
             maxAcres,
             burnType,
+            treatmentType,
             startYear,
             endYear,
             startMonth,
