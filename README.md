@@ -1,5 +1,5 @@
 # burn-server
-## Fire Maps DashBoard Server
+## Fire Maps Dashboard - Server
 Clone repo
 ```
 cd burn-server
